@@ -2,10 +2,12 @@
 	name = Ivan Katanić
 	email = ivan.katanic@gmail.com
 [credential]
-	helper = cache
+	helper = cache --timeout=3600
 [alias]
 	co = checkout
 	br = branch
 	ci = commit
 	st = status
         lg = log --graph --decorate --oneline --all
+[push]
+        default = simple
