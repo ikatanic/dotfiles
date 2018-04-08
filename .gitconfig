@@ -8,6 +8,6 @@
 	br = branch
 	ci = commit
 	st = status
-        lg = log --graph --decorate --oneline --all
+	lg = log --graph --decorate --oneline --all
 [push]
-        default = simple
+	default = simple

@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     markdown
      go
      csv
      ;; ----------------------------------------------------------------
@@ -40,11 +41,11 @@ values."
      ;; ----------------------------------------------------------------
      helm
      auto-completion
-     ;; better-defaults
      emacs-lisp
      git
-     ;; markdown
+     python
      org
+     cp
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -63,6 +64,7 @@ values."
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages
    '(
+     hledger-mode
      all-the-icons
      )
    ;; A list of packages that cannot be updated.
@@ -143,7 +145,7 @@ values."
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
    dotspacemacs-default-font '("Source Code Pro"
-                               :size 15
+                               :size 20
                                :weight normal
                                :width normal
                                :powerline-scale 1.2)
@@ -269,7 +271,14 @@ values."
    ;;                       text-mode
    ;;   :size-limit-kb 1000)
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers '(:relative t
+                               :disabled-for-modes dired-mode
+                               doc-view-mode
+                               markdown-mode
+                               org-mode
+                               pdf-view-mode
+                               text-mode
+                               :size-limit-kb 1000)
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'evil
@@ -300,7 +309,7 @@ values."
    ;; `trailing' to delete only the whitespace at end of lines, `changed'to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup nil
+   dotspacemacs-whitespace-cleanup 'trailing
    ))
 
 (defun dotspacemacs/user-init ()
@@ -319,59 +328,45 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-(defun get-compile-command (prefix)
-  (if (= prefix 1)
-      (concat "g++ " (buffer-name) " -std=c++0x -DLOKALNO -Wno-unused-result -O2 -Wall -o " (file-name-sans-extension (buffer-name)))
-  )
-)
- 
-(defun save-and-quick-compile (prefix) (interactive "p")
-  (save-buffer 0)
-  (compile (get-compile-command prefix))
-)
 
-(defun zuza-quick-run () (interactive)
-  (if (file-readable-p "makefile")
-      (async-shell-command (concat "make run " make-run-command) )
-      (async-shell-command (concat "./" (file-name-sans-extension (buffer-name))))
-      )
-)
-
-(defun zuza-tc-run-0 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 0"))
-)
-(defun zuza-tc-run-1 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 1"))
-)
-(defun zuza-tc-run-2 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 2"))
-)
-(defun zuza-tc-run-3 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 3"))
-)
-(defun zuza-tc-run-4 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 4"))
-)
-(defun zuza-tc-run-5 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 5"))
-)
-(defun zuza-tc-run-6 () (interactive)
-  (async-shell-command (concat "./" (file-name-sans-extension (buffer-name)) " 6"))
-)
-
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-2" 'save-and-quick-compile)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-3" 'zuza-quick-run)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-n" 'next-error)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-p" 'previous-error)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-4" 'zuza-tc-run-0)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-5" 'zuza-tc-run-1)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-6" 'zuza-tc-run-2)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-7" 'zuza-tc-run-3)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-8" 'zuza-tc-run-4)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-9" 'zuza-tc-run-5)
-(spacemacs/set-leader-keys-for-major-mode 'c++-mode "M-0" 'zuza-tc-run-6)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq neo-vc-integration '(face))
-)
+
+;;; Basic configuration
+(require 'hledger-mode)
+
+;; To open files with .journal extension in hledger-mode
+(add-to-list 'auto-mode-alist '("\\.journal\\'" . hledger-mode))
+
+;; go
+(add-hook 'go-mode-hook (lambda() (setq go-tab-width 4)))
+
+;; Provide the path to you journal file.
+;; The default location is too opinionated.
+(setq hledger-jfile "/home/kale/Dropbox/hledger.journal")
+
+;; org-mode
+(with-eval-after-load 'org
+  (setq org-capture-templates
+        (quote (
+                ("n" ; hotkey
+                 "note" ; name
+                 entry ; type
+                 (file+datetree "~/Dropbox/notes.org") ; heading type and title
+                 "* %?\nEntered on %U\n  %i") ; template
+
+                ("t"                ; hotkey
+                 "Todo list item"   ; name
+                 entry              ; type
+                 (file+headline "~/Dropbox/notes.org" "Tasks"); heading type and title
+                 "* TODO %?\n  %i\n") ; template
+                ))
+        )
+  )
+(with-eval-after-load 'org
+  (setq org-src-fontify-natively t)
+  )
+
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+)
