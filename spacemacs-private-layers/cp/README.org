@@ -1,7 +1,5 @@
 #+TITLE: cp layer
 
-# The maximum height of the logo should be 200 pixels.
-[[img/cp.png]]
 
 # TOC links should be GitHub style anchors.
 * Table of Contents                                        :TOC_4_gh:noexport:
@@ -10,7 +8,8 @@
 - [[#key-bindings][Key bindings]]
 
 * Description
-This layer does wonderful things:
+This layer is to be used in competitive programming.
+It does:
   - quick compilation of single cpp files
   - quick testing for topcoder-moj solutions
 
@@ -21,11 +20,16 @@ file.
 
 * Key bindings
 
-| Key Binding | Description    |
-|-------------+----------------|
-| ~SPC x x x~ | Does thing01   |
-# Use GitHub URLs if you wish to link a Spacemacs documentation file or its heading.
-# Examples:
-# [[https://github.com/syl20bnr/spacemacs/blob/master/doc/VIMUSERS.org#sessions]]
-# [[https://github.com/syl20bnr/spacemacs/blob/master/layers/%2Bfun/emoji/README.org][Link to Emoji layer README.org]]
-# If space-doc-mode is enabled, Spacemacs will open a local copy of the linked file.
+| Key Binding | Description                                |
+|-------------+--------------------------------------------|
+| ~SPC m c~   | Compile C++ solution                       |
+| ~SPC m n~   | Next compilation error                     |
+| ~SPC m p~   | Previous compilation erorr                 |
+| ~SPC m r~   | Run solution                               |
+| ~SPC m t 0~ | Run `topcoder-moj` solution on test case 0 |
+| ~SPC m t 1~ | Run `topcoder-moj` solution on test case 1 |
+| ~SPC m t 2~ | Run `topcoder-moj` solution on test case 2 |
+| ~SPC m t 3~ | Run `topcoder-moj` solution on test case 3 |
+| ~SPC m t 4~ | Run `topcoder-moj` solution on test case 4 |
+| ~SPC m t 5~ | Run `topcoder-moj` solution on test case 5 |
+| ~SPC m t 6~ | Run `topcoder-moj` solution on test case 6 |
