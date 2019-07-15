@@ -367,6 +367,7 @@ you should place your code here."
   (setq org-src-fontify-natively t)
   )
 
+(spacemacs/set-leader-keys "mf" (lambda () (interactive) (find-file "~/Dropbox/notes.org")))
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 )
