@@ -1,0 +1,1 @@
+Copy to ~/Library/Application Support/Code/User/settings.json

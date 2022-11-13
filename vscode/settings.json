@@ -1,0 +1,26 @@
+{
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<Esc>"]
+        },
+        {
+            "before": ["k", "k"],
+            "after": ["<Esc>"]
+        },
+        {
+            "before": ["z", "z"],
+            "commands": [":w"],
+            "after": ["<Esc>"]
+        } 
+    ],
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["z", "z"],
+            "commands": [":w"],
+        }
+    ],
+    "editor.tabSize": 2,
+    "editor.minimap.enabled": false,
+    "git.mergeEditor": false
+}
