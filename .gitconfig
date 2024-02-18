@@ -9,5 +9,7 @@
 	ci = commit
 	st = status
 	lg = log --graph --decorate --oneline --all
+	staash = stash --all
+	bb = !better-branch.sh
 [push]
 	default = simple
